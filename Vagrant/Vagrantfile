@@ -1,0 +1,10 @@
+Vagrant.configure("2") do |config|
+  
+    config.vm.define "centosVM1" do |VM1|
+        VM1.vm.box = "centos/7"
+    end
+  
+    config.vm.define "centosVM2" do |VM2|
+        VM2.vm.box = "centos/7"
+    end
+end
