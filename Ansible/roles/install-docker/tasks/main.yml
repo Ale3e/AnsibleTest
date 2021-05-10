@@ -1,0 +1,26 @@
+---
+#sudo yum install -y yum-utils 
+- name: "Install yum-utils"
+  yum:
+    name: yum-utils
+    state: latest
+
+#yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+- name: "add docker repository"
+  shell: "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
+
+#sudo yum install docker-ce docker-ce-cli containerd.io
+- name: "Install docker-ce"
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+#sudo systemctl start docker
+- name: "Start docker"
+  systemd:
+    state: started
+    name: docker
