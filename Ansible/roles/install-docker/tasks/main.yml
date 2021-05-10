@@ -8,12 +8,14 @@
 #yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 - name: "add docker repository"
   shell: "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
-
+  become: true
+  
 #sudo yum install docker-ce docker-ce-cli containerd.io
 - name: "Install docker-ce"
   yum:
     name: "{{ item }}"
     state: latest
+  become: true
   loop:
     - docker-ce
     - docker-ce-cli
@@ -24,3 +26,4 @@
   systemd:
     state: started
     name: docker
+  become: true
