@@ -1,10 +1,10 @@
 ---
-- name: "Install Docker"
-  hosts: all
-  roles:
-  - role: install-docker
+# - name: "Install Docker"
+#   hosts: all
+#   roles:
+#   - role: install-docker
 
-- name: "Install Docker"
+- name: "Setup swarm"
   hosts: manager
   roles:
   - role: setup-swarm

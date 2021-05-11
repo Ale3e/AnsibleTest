@@ -6,6 +6,7 @@
   yum:
     name: '*'
     state: latest
+  become: true
 
 # firewall-cmd --permanent --add-port=2376/tcp
 # firewall-cmd --permanent --add-port=2377/tcp
@@ -25,12 +26,14 @@
     - 7946/udp
     - 4789/udp
     - 80/tcp
+  become: true
 
 # firewall-cmd --reload
 - name: "Reload service firewalld"
   systemd:
     name: firewalld
     state: reloaded
+  become: true
 
 #sudo systemctl restart docker
 - name: "Restart docker"
