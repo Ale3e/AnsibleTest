@@ -4,7 +4,12 @@
   roles:
   - role: install-docker
 
-- name: "Setup swarm"
+- name: "Setup swarm for manager"
   hosts: manager
   roles:
   - role: setup-swarm
+
+- name: "Setup swarm for worker"
+  hosts: worker
+  roles:
+  - role: setup-swarm-worker
