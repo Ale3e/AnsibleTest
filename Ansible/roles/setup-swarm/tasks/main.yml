@@ -1,0 +1,49 @@
+---
+# tasks file for setup-swarm
+
+#yum update -y
+- name: "Update Packages"
+  yum:
+    name: '*'
+    state: latest
+
+# firewall-cmd --permanent --add-port=2376/tcp
+# firewall-cmd --permanent --add-port=2377/tcp
+# firewall-cmd --permanent --add-port=7946/tcp
+# firewall-cmd --permanent --add-port=7946/udp
+# firewall-cmd --permanent --add-port=4789/udp
+# firewall-cmd --permanent --add-port=80/tcp
+- name: "Add port to firewalld"
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop:
+    - 2376/tcp
+    - 2377/tcp
+    - 7946/tcp
+    - 7946/udp
+    - 4789/udp
+    - 80/tcp
+
+# firewall-cmd --reload
+- name: "Reload service firewalld"
+  systemd:
+    name: firewalld
+    state: reloaded
+
+#sudo systemctl restart docker
+- name: "Restart docker"
+  systemd:
+    name: docker
+    state: restarted
+  become: true
+
+#docker swarm init
+- name: "Init a new swarm"
+  community.docker.docker_swarm:
+    state: present
+  register: result
+
+#docker service create -p 80:80 --name webserver --replicas 5 httpd
+#7hqezhyak8jbt8idkkke8wizi
