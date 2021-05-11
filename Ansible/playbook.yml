@@ -3,3 +3,8 @@
   hosts: all
   roles:
   - role: install-docker
+
+- name: "Install Docker"
+  hosts: manager
+  roles:
+  - role: setup-swarm
