@@ -1,0 +1,48 @@
+---
+# tasks file for setup-swarm-worker
+#yum update -y
+- name: "Update Packages"
+  yum:
+    name: '*'
+    state: latest
+  become: true
+
+# firewall-cmd --permanent --add-port=2376/tcp
+# firewall-cmd --permanent  --add-port=7946/tcp
+# firewall-cmd --permanent --add-port=7946/udp
+#  firewall-cmd --permanent --add-port=4789/udp
+# firewall-cmd --permanent --add-port=80/tcp
+- name: "Add port to firewalld"
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop:
+    - 2376/tcp
+    - 7946/tcp
+    - 7946/udp
+    - 4789/udp
+    - 80/tcp
+  become: true
+
+# firewall-cmd --reload
+- name: "Reload service firewalld"
+  systemd:
+    name: firewalld
+    state: reloaded
+  become: true
+
+#sudo systemctl restart docker
+- name: "Restart docker"
+  systemd:
+    name: docker
+    state: restarted
+  become: true
+
+#add worker node
+# - name: "Add nodes"
+#   community.docker.docker_swarm:
+#     state: join
+#     advertise_addr: 192.168.1.2
+#     join_token: SWMTKN-1--xxxxx
+#     remote_addrs: [ '192.168.1.1:2377' ]
